@@ -1,0 +1,83 @@
+{# CALL BUZZ API TO GET THE TOKEN INFORMATION TO CALL OTHER API'S #}
+
+{% set username = "infosys/admin" %}
+{% set password = "admin" %}
+
+{% set login_service = aek.create_service("https://api.agilixbuzz.com/cmd") %}
+{{ login_service.set_header("content-type","application/json") }}
+{{ login_service.set_header("accept","application/json") }}
+
+{% set login_payload = {  
+  "request": {    
+    "cmd" : "login2",
+    "username" : username,    
+    "password" : password,  
+  }
+} %}
+
+{{ login_service.set_request_body(login_payload|json_encode) }}
+
+{% set login_response = login_service.json %}
+
+{% set login_domainid = login_response.response.user.domainid %}
+
+{% if login_domainid != ""  %}
+
+    {% set login_token = login_response.response.user.token %}
+
+    {% set courses_service = aek.create_service("https://api.agilixbuzz.com/cmd") %}
+    {{ courses_service.set_header("accept","application/json") }}
+    
+	{{ courses_service.set_parameter("cmd", "listcourses") }}
+	{{ courses_service.set_parameter("domainid", login_domainid) }}
+    {{ courses_service.set_parameter("_token", login_token) }}
+
+    {# FOR COURSE DATA (WHICH HAS IMAGE INFORMATION) #}
+    {{ courses_service.set_parameter("select", "course.data(thumbnail)") }} 
+
+	{{ courses_service.set_method("GET") }}
+
+    {% set courses_response_json = courses_service.json %}
+
+    {% set courses_response_array = courses_response_json.response.courses.course|as_array %} 
+
+    {% if courses_response_array|length > 0 %}       
+
+        {% set response_array = [] %}
+
+        {% set course_thumbnail = [] %}
+
+        {% for course in courses_response_array %}
+
+            {% set course_id = course.id|trim %}
+            {% set thumbnail_array = course.data.thumbnail|as_array %}
+            {% set course_thumbnail = thumbnail_array[0]["$value"] %}
+
+            {% set course_image_url = "https://api.agilixbuzz.com/Resz/" ~ login_token ~ "/" ~ course_id ~ "/" ~ course_thumbnail %}
+
+            {% set announcement_service = aek.create_service("https://api.agilixbuzz.com/cmd") %}
+            {{ announcement_service.set_header("accept","application/json") }}       
+            {{ announcement_service.set_method("GET") }}
+            
+            {{ announcement_service.set_parameter("cmd", "getannouncementlist") }}
+            {{ announcement_service.set_parameter("_token", login_token) }}
+            {{ announcement_service.set_parameter("entityid", course_id) }}
+
+            {% set alert_response_json = announcement_service.json %}
+
+            {% set alert_response_array = alert_response_json.response.announcements.announcement|as_array %}
+
+            {% set course = course|merge({
+                "announcementcount": alert_response_array|length,  
+                "courseimageurl": course_image_url               
+            }) %}           
+
+            {% set response_array = response_array|merge([course]) %} 
+
+        {% endfor %}
+
+        {{ aek.respond(response_array) }}
+
+    {% endif %}
+   
+{% endif %}

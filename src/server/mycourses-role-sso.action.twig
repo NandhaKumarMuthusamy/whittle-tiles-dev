@@ -1,0 +1,5 @@
+    {% set utils = aek.extension("CMAuthUtilities") %}
+    {% set attrs = utils.getTokenAttributes() %}
+    {% set extraAttributes = utils.getExtraAttributes() %}
+
+    {{ aek.respond(extraAttributes) }}

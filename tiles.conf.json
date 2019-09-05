@@ -1,0 +1,19 @@
+{
+  "tileComponents": {
+    "MyCoursesDynamic": {
+      "script": "bundle.js"
+    },
+    "MyCoursesStatic": {
+      "script": "bundle.js"
+    },
+    "MyCoursesImage": {
+      "script": "bundle.js"
+    },
+    "ASAPConnected": {
+      "script": "bundle.js"
+    },
+    "MyCoursesRoleSso": {
+      "script": "bundle.js"
+    }
+  }
+}

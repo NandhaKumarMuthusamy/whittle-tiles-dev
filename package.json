@@ -1,0 +1,61 @@
+{
+  "name": "@ombiel/whittle-tiles-dev",
+  "version": "1.0.0",
+  "repository": "-",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "aekdevserver start",
+    "story": "start-storybook -p 9001 -c .storybook",
+    "build": "aekdevserver build",
+    "build:analyze": "CM_BUNDLE_ANALYZE=yes aekdevserver build",
+    "devserver": "aekdevserver",
+    "lint": "eslint src/client",
+    "lint:fix": "eslint src/client --fix",
+    "aek:prerelease": "aekdevserver prerelease",
+    "aek:postcreate": "aekdevserver gen:tile-component",
+    "gen:tile-component": "aekdevserver gen:tile-component"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@ombiel/aek-asset-store": "^0.0.8",
+    "@ombiel/aek-devserver": "1.x.x",
+    "@ombiel/aek-webpack": "1.x.x",
+    "@ombiel/babel-preset-aek": "2.x.x",
+    "@ombiel/cm-tile-sdk": "1.x.x",
+    "@ombiel/eslint-config-aek": "2.x.x",
+    "@storybook/addon-knobs": "^5.0.11",
+    "@storybook/react": "^5.0.11",
+    "babel-loader": "^8.0.6",
+    "emotion": "^10.0.9",
+    "eslint": "^5.6.1",
+    "react": ">=16.8.5 <17",
+    "react-dom": ">=16.8.5 <17",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2"
+  },
+  "eslintConfig": {
+    "extends": "@ombiel/aek"
+  },
+  "ombiel": {
+    "boilerplate": "@ombiel/cm-tile-boilerplate@1.0.2",
+    "access": {
+      "write": {
+        "users": [
+          "na::nandhak"
+        ]
+      }
+    },
+    "settings": {
+      "aek-lib": {
+        "injectStyles": true,
+        "styles": {
+          "primaryColor": "#444444",
+          "secondaryColor": "#6f8e00"
+        }
+      }
+    },
+    "runserver": {
+      "hostname": "whittleschool-sandbox.campusm.exlibrisgroup.com"
+    }
+  }
+}

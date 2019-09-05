@@ -1,0 +1,22 @@
+homepage:
+
+  menu:
+    replace:
+      - desc: My Courses Dynamic
+        tileComponent: MyCoursesDynamic
+        tileWidth: 2
+
+      - desc: My Courses Static
+        tileComponent: MyCoursesStatic
+        tileWidth: 2
+
+      - desc: My Courses Image
+        tileComponent: MyCoursesImage
+        tileWidth: 2
+
+      - desc: ASAP Connected
+        tileComponent: ASAPConnected
+
+      - desc: My Courses Role SSO
+        tileComponent: MyCoursesRoleSso
+        tileWidth: 2

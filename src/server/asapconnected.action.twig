@@ -1,0 +1,15 @@
+{% set username = "org5164" %}
+{% set password = "9BHf2lKmnf" %}
+{% set organizationId = "5164" %}
+{% set apiKey = "XzqH7onMm6" %}
+{% set authorization_text = "user=org5164&password=9BHf2lKmnf&organizationId=5164&apiKey=XzqH7onMm6" %}
+
+{% set login_service = aek.create_service("https://api.asapconnected.com/api/login") %}
+{{ login_service.set_header("content-type","application/json") }}
+{{ login_service.set_header("accept","application/json") }}
+{{ login_service.set_method("GET") }}
+{{ login_service.set_header("Authorization", authorization_text) }}
+
+{% set login_response = login_service.raw_response %}
+
+{{ aek.respond(login_response) }}
